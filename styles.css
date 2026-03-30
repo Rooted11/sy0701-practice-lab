@@ -1,0 +1,288 @@
+:root {
+  --ink: #1f1f2e;
+  --muted: #5e6470;
+  --paper: #f4f2eb;
+  --sun: #f2b45a;
+  --teal: #2f9e99;
+  --rose: #e46f61;
+  --line: #d8d3c7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 5% 10%, #ffdfad 0%, #f4f2eb 50%),
+              radial-gradient(circle at 90% 90%, #b7ddd8 0%, transparent 40%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.bg-shape {
+  position: fixed;
+  border-radius: 999px;
+  filter: blur(30px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-shape-1 {
+  width: 280px;
+  height: 280px;
+  background: var(--sun);
+  top: -80px;
+  right: -60px;
+}
+
+.bg-shape-2 {
+  width: 320px;
+  height: 320px;
+  background: var(--teal);
+  bottom: -120px;
+  left: -70px;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  width: min(980px, calc(100% - 2rem));
+  margin: 2rem auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.hero {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1.3rem;
+  backdrop-filter: blur(10px);
+  animation: rise 300ms ease-out;
+}
+
+h1, h2 {
+  margin: 0 0 0.4rem;
+}
+
+p {
+  margin: 0;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1rem;
+  display: grid;
+  gap: 0.8rem;
+  animation: rise 400ms ease-out;
+}
+
+label {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 0.7rem;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.96rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+button {
+  border: 0;
+  border-radius: 0.7rem;
+  background: var(--teal);
+  color: white;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button.ghost {
+  background: #ffffff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+button.accent {
+  background: var(--rose);
+}
+
+.status {
+  color: var(--muted);
+}
+
+.quiz-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  background: #fff;
+}
+
+.mono {
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--muted);
+}
+
+.question-card {
+  display: grid;
+  gap: 0.9rem;
+  padding: 0.9rem;
+  border: 1px dashed var(--line);
+  border-radius: 0.8rem;
+  background: #fff;
+}
+
+.option {
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  padding: 0.7rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.6rem;
+  align-items: start;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.option.selected {
+  border-color: var(--teal);
+  background: #ecf8f7;
+}
+
+.option input {
+  margin-top: 0.2rem;
+}
+
+.review-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.review-item {
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--teal);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: #fff;
+}
+
+.review-item.wrong {
+  border-left-color: var(--rose);
+}
+
+.pbq-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.pbq-card {
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  padding: 0.9rem;
+  background: #fff;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.pbq-card.done {
+  border-color: #52b788;
+  box-shadow: 0 0 0 1px rgba(82, 183, 136, 0.25);
+}
+
+.pbq-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.pbq-card ul {
+  padding-left: 1.2rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.pbq-card .pbq-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pbq-card button {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  border-radius: 0.6rem;
+}
+
+.pbq-card.done button {
+  background: var(--rose);
+}
+
+.pbq-card .hint {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .app {
+    width: calc(100% - 1rem);
+    margin: 1rem auto;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .quiz-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

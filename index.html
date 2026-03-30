@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SY0-701 Practice Test Taker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-shape bg-shape-1"></div>
+  <div class="bg-shape bg-shape-2"></div>
+
+  <main class="app">
+    <header class="hero">
+      <h1>SY0-701 Practice Test Taker</h1>
+      <p>Import questions from FreeCram page text and run a timed, scored quiz session.</p>
+    </header>
+
+    <section class="panel" id="importPanel">
+      <h2>Import SY0-701 Dump</h2>
+      <p>Drop any exported dump (.txt/.json) in the picker below so the test taker can parse the questions and answers.</p>
+      <label for="fileInput">Choose dump</label>
+      <input id="fileInput" type="file" accept=".txt,.json,.log,.dump" />
+      <div class="actions">
+        <button id="loadFileBtn">Load questions</button>
+      </div>
+      <p id="importStatus" class="status">Ready.</p>
+    </section>
+
+    <section class="panel hidden" id="quizPanel">
+      <div class="quiz-top">
+        <div>
+          <h2 id="progressText">Question 1</h2>
+          <p id="timerText" class="mono">00:00</p>
+        </div>
+        <div class="chip" id="scoreLive">Score: 0</div>
+      </div>
+
+      <article id="questionCard" class="question-card"></article>
+
+      <div class="actions">
+        <button id="prevBtn" class="ghost">Previous</button>
+        <button id="nextBtn">Next</button>
+        <button id="finishBtn" class="accent">Finish Test</button>
+      </div>
+    </section>
+
+    <section class="panel hidden" id="resultPanel">
+      <h2>Results</h2>
+      <p id="resultSummary"></p>
+      <div class="actions">
+        <button id="restartBtn">Retake</button>
+      </div>
+      <div id="reviewList" class="review-list"></div>
+    </section>
+
+    <section class="panel" id="practicalPanel">
+      <h2>Practical PBQs</h2>
+      <p>Run through these hands-on scenario prompts, jot down your answers, then use the “Mark done” buttons to track progress.</p>
+      <div id="pbqList" class="pbq-list"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
