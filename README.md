@@ -21,7 +21,8 @@ known answers), and adds a short “Practical PBQ” tracker for hands-on scenar
    ```sh
    node server.js
    ```
-3. Browse to `http://127.0.0.1:3000`, choose your dump file, and click **Load questions**.
+3. Open `http://127.0.0.1:3000` in your browser; the server serves everything out of the `client/` directory.
+4. Choose your dump file and click **Load questions**.
 
 ## Dump requirements
 
@@ -34,4 +35,3 @@ known answers), and adds a short “Practical PBQ” tracker for hands-on scenar
 - The server now only supports `POST /api/import`. All import logic runs locally to avoid relying on remote scraping.
 - Practical PBQs are static cards rendered client-side; you can reset a card by clicking “Reset”.
 - You can create more dumps for additional question banks (FreeCram, Exambible, etc.) by exporting them as text files and uploading them.
-

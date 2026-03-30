@@ -5,7 +5,7 @@ const { URL } = require("url");
 
 const PORT = 3000;
 const HOST = "127.0.0.1";
-const PUBLIC_DIR = __dirname;
+const PUBLIC_DIR = path.join(__dirname, "client");
 
 function sendJson(res, statusCode, payload) {
   res.writeHead(statusCode, {
