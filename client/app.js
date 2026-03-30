@@ -21,7 +21,12 @@ const els = {
   finishBtn: document.getElementById("finishBtn"),
   resultSummary: document.getElementById("resultSummary"),
   reviewList: document.getElementById("reviewList"),
-  restartBtn: document.getElementById("restartBtn")
+  restartBtn: document.getElementById("restartBtn"),
+  statTotal: document.getElementById("statTotal"),
+  statAnswered: document.getElementById("statAnswered"),
+  statKnown: document.getElementById("statKnown"),
+  exportBtn: document.getElementById("exportBtn"),
+  resetProgressBtn: document.getElementById("resetProgressBtn")
 };
 
 const pbqListEl = document.getElementById("pbqList");
@@ -74,6 +79,44 @@ function setUploadDisabled(disabled) {
   els.loadFileBtn.disabled = disabled;
 }
 
+function updateStats() {
+  const total = state.questions.length;
+  const answered = state.answers.filter(Boolean).length;
+  const knownAnswers = state.questions.filter((q) => !!q.answer).length;
+
+  if (els.statTotal) {
+    els.statTotal.textContent = total;
+  }
+  if (els.statAnswered) {
+    els.statAnswered.textContent = answered;
+  }
+  if (els.statKnown) {
+    els.statKnown.textContent = knownAnswers;
+  }
+}
+
+function exportReview() {
+  const payload = state.questions.map((q, idx) => ({
+    prompt: q.prompt,
+    selected: state.answers[idx] || null,
+    expected: q.answer || null
+  }));
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const anchor = document.createElement("a");
+  anchor.href = URL.createObjectURL(blob);
+  anchor.download = "sy0-701-review.json";
+  anchor.click();
+  URL.revokeObjectURL(anchor.href);
+}
+
+function resetProgress() {
+  state.answers = new Array(state.questions.length).fill(null);
+  state.currentIndex = 0;
+  setStatus("Answers reset, ready for a fresh pass.");
+  renderCurrentQuestion();
+  updateStats();
+}
+
 function applyImportedQuestions(payload) {
   state.questions = payload.questions || [];
   state.answers = new Array(state.questions.length).fill(null);
@@ -90,6 +133,7 @@ function applyImportedQuestions(payload) {
   els.quizPanel.classList.remove("hidden");
   els.resultPanel.classList.add("hidden");
   renderCurrentQuestion();
+  updateStats();
 }
 
 async function importFromDump(text, label) {
@@ -210,6 +254,7 @@ function renderCurrentQuestion() {
 
   els.prevBtn.disabled = state.currentIndex === 0;
   els.nextBtn.disabled = state.currentIndex >= state.questions.length - 1;
+  updateStats();
 }
 
 function finishQuiz() {
@@ -319,6 +364,12 @@ els.nextBtn.addEventListener("click", () => {
 });
 els.finishBtn.addEventListener("click", finishQuiz);
 els.restartBtn.addEventListener("click", restartQuiz);
+if (els.exportBtn) {
+  els.exportBtn.addEventListener("click", exportReview);
+}
+if (els.resetProgressBtn) {
+  els.resetProgressBtn.addEventListener("click", resetProgress);
+}
 
 if (pbqListEl) {
   pbqListEl.addEventListener("click", (event) => {

@@ -15,8 +15,8 @@
 
   <main class="app">
     <header class="hero">
-      <h1>SY0-701 Practice Test Taker</h1>
-      <p>Import questions from FreeCram page text and run a timed, scored quiz session.</p>
+      <h1>CipherRun SY0-701</h1>
+      <p>Import your Security+ dumps, run a timed quiz, and track practical PBQs in one dashboard.</p>
     </header>
 
     <section class="panel" id="importPanel">
@@ -28,6 +28,32 @@
         <button id="loadFileBtn">Load questions</button>
       </div>
       <p id="importStatus" class="status">Ready.</p>
+    </section>
+
+    <section class="panel stats-panel">
+      <h2>Session overview</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Total questions</span>
+          <strong id="statTotal">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Answered</span>
+          <strong id="statAnswered">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Known answers</span>
+          <strong id="statKnown">0</strong>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="exportBtn" class="ghost">Download review</button>
+        <button id="resetProgressBtn" class="ghost">Reset answers</button>
+      </div>
+      <p class="instructions">
+        Use this dashboard to keep tabs on how many items you’ve answered, how many have official answers,
+        and whether the session is complete. Export the current review or reset your selections anytime.
+      </p>
     </section>
 
     <section class="panel hidden" id="quizPanel">

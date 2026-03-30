@@ -1,14 +1,15 @@
-# SY0-701 Practice Lab
+# CipherRun SY0-701
 
-A lightweight client/server practice tester tailored around the CompTIA Security+ SY0-701 exam. The app
-lets you upload existing dumps/text exports, runs a timed multiple-choice session, tracks scoring (including
-known answers), and adds a short “Practical PBQ” tracker for hands-on scenario prep.
+CipherRun SY0-701 is a lightweight client/server practice tester tailored around the CompTIA Security+ exam. The app
+lets you upload existing `.txt`/`.json` exports, run a timed multiple-choice session, track scoring (including
+known answers), and add a short “Practical PBQ” tracker for hands-on scenario prep.
 
 ## Features
 
 - Drag/drop (or browse) a `.txt`/`.json`/`.dump` export that contains the `NEW QUESTION … Answer:` format and upload it directly from the browser.
 - Server-side parser that extracts prompts, choices, and documented answers, then enriches them via simple heuristics if the answer is missing.
 - Timed quiz UI with navigation controls, live score, review screen, and ability to retake the test.
+- Dashboard stats showing total/answered/known answers plus buttons to download the current review or reset cleared answers.
 - Practical PBQ panel to track three made-up scenario prompts (contain SSH brute force, guest Wi-Fi segmentation, ransomware response).
 
 ## Getting started
