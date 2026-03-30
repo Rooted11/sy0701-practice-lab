@@ -16,22 +16,17 @@
   <main class="app">
     <header class="hero">
       <h1>CipherRun SY0-701</h1>
-      <p>Import your Security+ dumps, run a timed quiz, and track practical PBQs in one dashboard.</p>
+      <p>Import your Security+ cipher exam files, run a timed quiz, and track practical PBQs in one dashboard.</p>
     </header>
-
-    <section class="panel" id="importPanel">
-      <h2>Import SY0-701 Dump</h2>
-      <p>Drop any exported dump (.txt/.json) in the picker below so the test taker can parse the questions and answers.</p>
-      <label for="fileInput">Choose dump</label>
-      <input id="fileInput" type="file" accept=".txt,.json,.log,.dump" />
-      <div class="actions">
-        <button id="loadFileBtn">Load questions</button>
-      </div>
-      <p id="importStatus" class="status">Ready.</p>
-    </section>
 
     <section class="panel stats-panel">
       <h2>Session overview</h2>
+      <div class="actions">
+        <label for="fileInput" class="status">Load data</label>
+        <input id="fileInput" type="file" accept=".txt,.json,.log,.exam" />
+        <button id="loadFileBtn">Load questions</button>
+      </div>
+      <p id="importStatus" class="status">Ready.</p>
       <div class="stats-grid">
         <div class="stat-card">
           <span class="stat-label">Total questions</span>

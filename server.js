@@ -24,17 +24,17 @@ function readRequestBody(req) {
   });
 }
 
-function parseDumpText(rawText) {
+function parseCipherSections(rawText) {
   const normalized = rawText.replace(/\r/g, "");
   const blockRegex = /NEW QUESTION\s+\d+[\s\S]*?(?=NEW QUESTION\s+\d+|$)/gi;
   const blocks = normalized.match(blockRegex) || [];
 
   return blocks
-    .map((block) => parseDumpBlock(block))
+    .map((block) => parseCipherBlock(block))
     .filter(Boolean);
 }
 
-function parseDumpBlock(block) {
+function parseCipherBlock(block) {
   const lines = block
     .split("\n")
     .map((line) => line.replace(/\s+/g, " ").trim())
@@ -204,7 +204,7 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
-        const questions = parseDumpText(text);
+        const questions = parseCipherSections(text);
         if (questions.length === 0) {
           sendJson(res, 422, {
             error: "No question blocks were parsed from the provided text."
@@ -214,7 +214,7 @@ const server = http.createServer(async (req, res) => {
 
         const enriched = enrichAnswers(questions);
         sendJson(res, 200, {
-          source: body.sourceLabel || "uploaded dump",
+          source: body.sourceLabel || "uploaded cipher exam",
           totalQuestions: enriched.length,
           questions: enriched
         });
@@ -232,5 +232,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`Practice test taker running at http://${HOST}:${PORT}`);
+  console.log(`CipherRun SY0-701 server running at http://${HOST}:${PORT}`);
 });

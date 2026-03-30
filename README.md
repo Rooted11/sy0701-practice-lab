@@ -6,7 +6,7 @@ known answers), and add a short “Practical PBQ” tracker for hands-on scenari
 
 ## Features
 
-- Drag/drop (or browse) a `.txt`/`.json`/`.dump` export that contains the `NEW QUESTION … Answer:` format and upload it directly from the browser.
+- Drag/drop (or browse) a `.txt`/`.json`/`.file` export that contains the `NEW QUESTION … Answer:` format and upload it directly from the browser.
 - Server-side parser that extracts prompts, choices, and documented answers, then enriches them via simple heuristics if the answer is missing.
 - Timed quiz UI with navigation controls, live score, review screen, and ability to retake the test.
 - Dashboard stats showing total/answered/known answers plus buttons to download the current review or reset cleared answers.
@@ -23,16 +23,16 @@ known answers), and add a short “Practical PBQ” tracker for hands-on scenari
    node server.js
    ```
 3. Open `http://127.0.0.1:3000` in your browser; the server serves everything out of the `client/` directory.
-4. Choose your dump file and click **Load questions**.
+4. Choose your file file and click **Load questions**.
 
-## Dump requirements
+## file requirements
 
 - The importer expects plain text that includes `NEW QUESTION <number>` blocks, followed
-  by “Answer: <letter>” and optionally an explanation. This matches most VCE/PDF-to-text conversions from popular dumps.
+  by “Answer: <letter>” and optionally an explanation. This matches most VCE/PDF-to-text conversions from popular files.
 - Keep spacing simple (no fancy tables) so the parser can split on `NEW QUESTION` and `A.`/`B.` options.
 
 ## Notes
 
 - The server now only supports `POST /api/import`. All import logic runs locally to avoid relying on remote scraping.
 - Practical PBQs are static cards rendered client-side; you can reset a card by clicking “Reset”.
-- You can create more dumps for additional question banks (FreeCram, Exambible, etc.) by exporting them as text files and uploading them.
+- You can create more files for additional question banks (FreeCram, Exambible, etc.) by exporting them as text files and uploading them.

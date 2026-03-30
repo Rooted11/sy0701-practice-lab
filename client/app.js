@@ -136,7 +136,7 @@ function applyImportedQuestions(payload) {
   updateStats();
 }
 
-async function importFromDump(text, label) {
+async function importFromCipherSource(text, label) {
   if (!text) {
     setStatus("Provided text is empty.", true);
     return;
@@ -177,13 +177,13 @@ async function importFromDump(text, label) {
 async function importFromFile() {
   const file = els.fileInput.files?.[0];
   if (!file) {
-    setStatus("Choose a dump text file first.", true);
+    setStatus("Choose a cipher exam file first.", true);
     return;
   }
 
   try {
     const text = await file.text();
-    await importFromDump(text, file.name);
+    await importFromCipherSource(text, file.name);
   } catch (error) {
     setStatus("Unable to read the file.", true);
   }
