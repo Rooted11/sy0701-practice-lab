@@ -703,5 +703,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`CipherRun server running at http://${HOST}:${PORT}`);
+  console.log(`CipherRun Gauntlet server running at http://${HOST}:${PORT}`);
 });

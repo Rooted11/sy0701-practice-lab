@@ -166,7 +166,7 @@ function exportReview() {
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
   const anchor = document.createElement("a");
   anchor.href = URL.createObjectURL(blob);
-  anchor.download = "sy0-701-review.json";
+  anchor.download = "cipherrun-gauntlet-review.json";
   anchor.click();
   URL.revokeObjectURL(anchor.href);
 }

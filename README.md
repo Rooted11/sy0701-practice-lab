@@ -1,6 +1,6 @@
-# CipherRun Prep Lab
+# CipherRun Gauntlet
 
-CipherRun Prep Lab is a lightweight client/server practice tester designed for cyber certification study. The platform
+CipherRun Gauntlet is a lightweight client/server practice tester designed for cyber certification study. The platform
 lets you upload `.txt`, `.json`, `.exam`, `.pdf`, and `.vce` sources, run a timed multiple-choice session, track
 scoring (including known answers), and add a short "Practical PBQ" tracker for hands-on scenario prep.
 
