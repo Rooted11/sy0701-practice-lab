@@ -1,90 +1,127 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SY0-701 Practice Test Taker</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="bg-shape bg-shape-1"></div>
-  <div class="bg-shape bg-shape-2"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CipherRun Prep Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="orb orb-one"></div>
+    <div class="orb orb-two"></div>
+    <div class="orb orb-three"></div>
 
-  <main class="app">
-    <header class="hero">
-      <h1>CipherRun SY0-701</h1>
-      <p>Import your Security+ cipher exam files, run a timed quiz, and track practical PBQs in one dashboard.</p>
-    </header>
-
-    <section class="panel stats-panel">
-      <h2>Session overview</h2>
-      <div class="actions">
-        <label for="fileInput" class="status">Load data</label>
-        <input id="fileInput" type="file" accept=".txt,.json,.log,.exam" />
-        <button id="loadFileBtn">Load questions</button>
-      </div>
-      <p id="importStatus" class="status">Ready.</p>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-label">Total questions</span>
-          <strong id="statTotal">0</strong>
+    <main class="cipher-app">
+      <header class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">CipherRun Prep Lab</p>
+          <h1>Cyber certification mastery starts here</h1>
+          <p class="hero-subtitle">
+            Import cipher exam text, PDFs, or VCE files, challenge yourself with timed multiple-choice rounds, and keep
+            practical PBQs on the radar for a complete prep loop.
+          </p>
         </div>
-        <div class="stat-card">
-          <span class="stat-label">Answered</span>
-          <strong id="statAnswered">0</strong>
+        <div class="hero-actions">
+          <label for="fileInput" class="ghost-pill">Upload cipher exam</label>
+          <div class="upload-row">
+            <input id="fileInput" type="file" accept=".txt,.json,.log,.exam,.pdf,.vce" />
+            <button id="loadFileBtn" class="glow">Load questions</button>
+          </div>
+          <p id="importStatus" class="status-pill">Ready to rip through questions behind the scenes (PDF/VCE decoding enabled).</p>
         </div>
-        <div class="stat-card">
-          <span class="stat-label">Known answers</span>
-          <strong id="statKnown">0</strong>
+      </header>
+
+      <section class="content-grid">
+        <section class="panel stats-panel">
+          <div class="stats-header">
+            <div>
+              <h2>Session pulse</h2>
+              <p class="muted">
+                Track how much of your latest cipher exam set is live, answered, and mapped to known answers.
+              </p>
+            </div>
+            <div class="pulse-badge" id="sessionMeter">
+              <span class="pulse-fill" id="sessionMeterFill"></span>
+              <strong id="sessionMeterLabel">0%</strong>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card highlight">
+              <span class="stat-label">Total questions</span>
+              <strong id="statTotal">0</strong>
+              <p class="muted">Full set imported this session.</p>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Answered</span>
+              <strong id="statAnswered">0</strong>
+              <p class="muted">Selections locked in.</p>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Known answers</span>
+              <strong id="statKnown">0</strong>
+              <p class="muted">Questions with official answers.</p>
+            </div>
+          </div>
+
+          <div class="stats-actions">
+            <button id="exportBtn" class="ghost">Download review</button>
+            <button id="resetProgressBtn" class="ghost">Reset answers</button>
+          </div>
+        </section>
+
+        <section class="panel quiz-panel hidden" id="quizPanel">
+          <div class="quiz-dash">
+            <div>
+              <p class="muted">Live question</p>
+              <h3 id="progressText">Question 1</h3>
+            </div>
+            <div class="timer-chip">
+              <span class="mono">Timer</span>
+              <strong id="timerText">00:00</strong>
+            </div>
+            <div class="chip" id="scoreLive">Score: 0</div>
+          </div>
+
+          <article id="questionCard" class="question-card"></article>
+
+          <div class="actions control-row">
+            <button id="prevBtn" class="ghost">Previous</button>
+            <button id="nextBtn" class="ghost">Next</button>
+            <button id="finishBtn" class="cta">Finish test</button>
+          </div>
+        </section>
+
+        <section class="panel hidden review-panel" id="resultPanel">
+          <div class="result-header">
+            <h2>Results</h2>
+            <p id="resultSummary" class="muted"></p>
+          </div>
+          <div class="actions">
+            <button id="restartBtn" class="glow-light">Retake test</button>
+          </div>
+          <div id="reviewList" class="review-list"></div>
+        </section>
+      </section>
+
+      <section class="panel pbq-panel" id="practicalPanel">
+        <div class="pbq-heading">
+          <div>
+            <h2>Practical PBQs</h2>
+            <p class="muted">Faux scenarios you can journal, whiteboard, or tackle in the lab.</p>
+          </div>
+          <button class="ghost">Add custom PBQ</button>
         </div>
-      </div>
-      <div class="actions">
-        <button id="exportBtn" class="ghost">Download review</button>
-        <button id="resetProgressBtn" class="ghost">Reset answers</button>
-      </div>
-      <p class="instructions">
-        Use this dashboard to keep tabs on how many items you’ve answered, how many have official answers,
-        and whether the session is complete. Export the current review or reset your selections anytime.
-      </p>
-    </section>
+        <div id="pbqList" class="pbq-list"></div>
+      </section>
+    </main>
 
-    <section class="panel hidden" id="quizPanel">
-      <div class="quiz-top">
-        <div>
-          <h2 id="progressText">Question 1</h2>
-          <p id="timerText" class="mono">00:00</p>
-        </div>
-        <div class="chip" id="scoreLive">Score: 0</div>
-      </div>
-
-      <article id="questionCard" class="question-card"></article>
-
-      <div class="actions">
-        <button id="prevBtn" class="ghost">Previous</button>
-        <button id="nextBtn">Next</button>
-        <button id="finishBtn" class="accent">Finish Test</button>
-      </div>
-    </section>
-
-    <section class="panel hidden" id="resultPanel">
-      <h2>Results</h2>
-      <p id="resultSummary"></p>
-      <div class="actions">
-        <button id="restartBtn">Retake</button>
-      </div>
-      <div id="reviewList" class="review-list"></div>
-    </section>
-
-    <section class="panel" id="practicalPanel">
-      <h2>Practical PBQs</h2>
-      <p>Run through these hands-on scenario prompts, jot down your answers, then use the “Mark done” buttons to track progress.</p>
-      <div id="pbqList" class="pbq-list"></div>
-    </section>
-  </main>
-
-  <script src="app.js"></script>
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>

@@ -1,0 +1,14 @@
+{
+  "name": "cipherrun-sy0-701",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "pdf-parse": "^1.1.1",
+    "unzipper": "^0.10.11"
+  }
+}

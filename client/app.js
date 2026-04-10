@@ -25,9 +25,14 @@ const els = {
   statTotal: document.getElementById("statTotal"),
   statAnswered: document.getElementById("statAnswered"),
   statKnown: document.getElementById("statKnown"),
+  sessionMeterFill: document.getElementById("sessionMeterFill"),
+  sessionMeterLabel: document.getElementById("sessionMeterLabel"),
   exportBtn: document.getElementById("exportBtn"),
   resetProgressBtn: document.getElementById("resetProgressBtn")
 };
+
+const root = document.documentElement;
+let statusPulseTimer = null;
 
 const pbqListEl = document.getElementById("pbqList");
 const practicalPBQs = [
@@ -72,11 +77,60 @@ const pbqDone = new Set();
 
 function setStatus(text, isError = false) {
   els.importStatus.textContent = text;
-  els.importStatus.style.color = isError ? "#b4372b" : "#5e6470";
+  els.importStatus.classList.remove("success", "error", "status-pulse");
+  els.importStatus.classList.add(isError ? "error" : "success", "status-pulse");
+  if (statusPulseTimer) {
+    clearTimeout(statusPulseTimer);
+  }
+  statusPulseTimer = setTimeout(() => {
+    els.importStatus.classList.remove("status-pulse");
+  }, 1000);
+  triggerHeroGlow(isError);
+}
+
+function triggerHeroGlow(isError) {
+  const target = isError ? 0.4 : 0.85;
+  root.style.setProperty("--pulse-progress", target);
+  setTimeout(() => {
+    root.style.setProperty("--pulse-progress", 0);
+  }, 600);
 }
 
 function setUploadDisabled(disabled) {
   els.loadFileBtn.disabled = disabled;
+}
+
+function getFileExtension(file) {
+  const name = file.name || "";
+  const segments = name.split(".");
+  return segments.length > 1 ? segments.pop().toLowerCase() : "";
+}
+
+function arrayBufferToBase64(buffer) {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode.apply(null, chunk);
+  }
+  return btoa(binary);
+}
+
+async function buildUploadPayload(file) {
+  const extension = getFileExtension(file);
+  if (binaryExtensions.has(extension)) {
+    const buffer = await file.arrayBuffer();
+    return {
+      binary: arrayBufferToBase64(buffer),
+      extension
+    };
+  }
+  const text = await file.text();
+  return {
+    text,
+    extension
+  };
 }
 
 function updateStats() {
@@ -92,6 +146,14 @@ function updateStats() {
   }
   if (els.statKnown) {
     els.statKnown.textContent = knownAnswers;
+  }
+
+  const percentAnswered = total ? Math.round((answered / total) * 100) : 0;
+  if (els.sessionMeterLabel) {
+    els.sessionMeterLabel.textContent = `${percentAnswered}%`;
+  }
+  if (els.sessionMeterFill) {
+    els.sessionMeterFill.style.setProperty("--progress", (percentAnswered / 100).toFixed(2));
   }
 }
 
@@ -136,13 +198,19 @@ function applyImportedQuestions(payload) {
   updateStats();
 }
 
-async function importFromCipherSource(text, label) {
-  if (!text) {
-    setStatus("Provided text is empty.", true);
+const binaryExtensions = new Set(["pdf", "vce"]);
+
+async function importFromCipherSource(payload, label) {
+  const hasText = typeof payload?.text === "string" && payload.text.trim();
+  const hasData = payload?.binary || hasText;
+  if (!hasData) {
+    const message = payload?.binary ? "Cipher file decoded empty output." : "Provided text is empty.";
+    setStatus(message, true);
     return;
   }
 
-  setStatus(label ? `Importing ${label}...` : "Importing questions...");
+  const typeLabel = payload.extension ? payload.extension.toUpperCase() : "TEXT";
+  setStatus(label ? `Importing ${label}...` : `Importing ${typeLabel} data...`);
   setUploadDisabled(true);
 
   try {
@@ -151,13 +219,27 @@ async function importFromCipherSource(text, label) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ text, sourceLabel: label })
+      body: JSON.stringify({ ...payload, sourceLabel: label })
     });
 
-    const data = await response.json();
+    const rawResponse = await response.text();
+    let data = null;
+    if (rawResponse) {
+      try {
+        data = JSON.parse(rawResponse);
+      } catch (parseError) {
+        throw new Error(
+          `Unexpected server response${response.status ? ` (${response.status})` : ""}: ${rawResponse}`
+        );
+      }
+    }
 
     if (!response.ok) {
-      throw new Error(data.error || "Failed to import questions from file.");
+      const message =
+        data?.error ||
+        rawResponse ||
+        `Server responded with ${response.status} ${response.statusText}`;
+      throw new Error(message);
     }
 
     if (!data.questions || !data.questions.length) {
@@ -182,10 +264,10 @@ async function importFromFile() {
   }
 
   try {
-    const text = await file.text();
-    await importFromCipherSource(text, file.name);
+    const payload = await buildUploadPayload(file);
+    await importFromCipherSource(payload, file.name);
   } catch (error) {
-    setStatus("Unable to read the file.", true);
+    setStatus(error?.message || "Unable to read the file.", true);
   }
 }
 
@@ -380,5 +462,12 @@ if (pbqListEl) {
     togglePBQ(btn.dataset.pbqId);
   });
 }
+
+window.addEventListener("pointermove", (event) => {
+  const x = (event.clientX / window.innerWidth) * 100;
+  const y = (event.clientY / window.innerHeight) * 100;
+  root.style.setProperty("--pointer-x", x.toString());
+  root.style.setProperty("--pointer-y", y.toString());
+});
 
 renderPracticalPBQs();
